@@ -7,12 +7,18 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="im-demo" />
+        <module name="im-netty" />
+        <module name="im-ye" />
+        <module name="websocket-server" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="im-demo" options="-parameters" />
+      <module name="im-netty" options="-parameters" />
+      <module name="im-ye" options="-parameters" />
+      <module name="websocket-server" options="-parameters" />
     </option>
   </component>
 </project>

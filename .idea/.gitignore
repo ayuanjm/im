@@ -6,3 +6,10 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+/middleware/.idea/
+/middleware/.mvn/
+/im-demo/target/
+/im-netty/target/
+/im-ye/target/
+/websocket-server/target/
+

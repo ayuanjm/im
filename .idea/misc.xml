@@ -5,6 +5,9 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/websocket-server/pom.xml" />
+        <option value="$PROJECT_DIR$/im-ye/pom.xml" />
+        <option value="$PROJECT_DIR$/im-netty/pom.xml" />
       </list>
     </option>
   </component>
