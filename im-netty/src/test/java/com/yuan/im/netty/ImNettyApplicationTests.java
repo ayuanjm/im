@@ -1,4 +1,4 @@
-package com.yuan.im.imnetty;
+package com.yuan.im.netty;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
