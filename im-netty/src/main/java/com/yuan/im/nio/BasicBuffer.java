@@ -13,6 +13,16 @@ import java.nio.IntBuffer;
  * 但是NIO的Buffer是可以读也可以写，需要flip方法切换
  * 7、channel是双向的，可以返回底层操作系统的情况，比如Linux底层操作系统通道就是双向的
  * </p>
+ * <p>
+ * // 标记
+ * int mark = -1;
+ * // 位置，下一个要被读或写的元素的索引，每次读写缓冲区数据时都会改变该值，为下一次读写作准备
+ * int position = 0;
+ * // 表示缓冲区的当前终点，不能对缓存区超过极限的位置进行读写操作，且极限是可以修改的
+ * int limit;
+ * // 容量，即可以容纳的最大数据量，在缓冲区创建时被设定并且不能改变
+ * int capacity;
+ * </p>
  *
  * @desc: 举例说明Buffer的使用
  * @author: YuanJiaMin
