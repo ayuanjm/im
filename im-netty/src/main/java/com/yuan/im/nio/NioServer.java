@@ -12,7 +12,16 @@ import java.util.Set;
 
 /**
  * Copyright(c) 2018 Sunyur.com, All Rights Reserved.
- * <P></P>
+ * <p>
+ * // 阻塞，但是可以被selector.wakeup()唤醒；selector.select()有返回值不是一定有事件发生
+ * selector.select()
+ * // 阻塞 1000 毫秒,在 1000 毫秒后返回
+ * selector.select(1000);
+ * // 唤醒 selector
+ * selector.wakeup();
+ * // 不阻塞,立马返还
+ * selector.selectNow();
+ * </P>
  *
  * @author: YuanJiaMin
  * @date: 2021/4/4 10:53 下午
@@ -64,7 +73,13 @@ public class NioServer {
                     socketChannel.read(byteBuffer);
                     System.out.println("收到客户端消息：" + new String(Arrays.copyOf(byteBuffer.array(), byteBuffer.position())));
                 }
-                // 手动从集合中移除当前的selectionKey，防止重复操作
+
+                /**
+                 * 手动从集合中移除当前的selectionKey，防止重复操作
+                 * 在每次迭代时, 我们都调用 keyIterator.remove() 代码块，将这个 key 从迭代器中删除。
+                 * 因为 #select() 方法仅仅是简单地将就绪的 Channel 对应的 SelectionKey 放到 selected keys 集合中。
+                 * 因此，如果我们从 selected keys 集合中，获取到一个 key ，但是没有将它删除，那么下一次 #select 时, 这个 SelectionKey 还在 selectedKeys 中.
+                 */
                 iterator.remove();
             }
         }
