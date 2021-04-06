@@ -79,6 +79,7 @@ public class GroupChatServer {
             ByteBuffer buffer = ByteBuffer.allocate(1024);
             int count = socketChannel.read(buffer);
             if (count > 0) {
+                buffer.flip();
                 String msg = new String(buffer.array()).trim();
                 System.out.println("收到客户端的消息:" + msg);
                 // 向其他客户端转发消息

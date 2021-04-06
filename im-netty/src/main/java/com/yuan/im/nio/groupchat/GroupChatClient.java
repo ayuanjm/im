@@ -77,6 +77,7 @@ public class GroupChatClient {
                         SocketChannel socketChannel = (SocketChannel) key.channel();
                         ByteBuffer buffer = ByteBuffer.allocate(1024);
                         socketChannel.read(buffer);
+                        buffer.flip();
                         System.out.println(new String(buffer.array()).trim());
                     }
                     iterator.remove();
