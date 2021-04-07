@@ -22,6 +22,7 @@
 
     <modules>
         <module>im-demo</module>
+        <module>im-netty</module>
         <module>websocket-server</module>
     </modules>
 
@@ -29,6 +30,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.6.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.32</version>
         </dependency>
     </dependencies>
 </project>

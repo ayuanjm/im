@@ -4,7 +4,8 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Copyright(c) 2018 Sunyur.com, All Rights Reserved.
@@ -14,8 +15,9 @@ import lombok.extern.slf4j.Slf4j;
  * @date: 2021/4/1 10:47 上午
  * @describe: websocket 服务端
  */
-@Slf4j
 public class NioWebSocketServer {
+    private static final Logger log = LoggerFactory.getLogger(NioWebSocketServer.class);
+
     public static void main(String[] args) {
         new NioWebSocketServer().init();
     }

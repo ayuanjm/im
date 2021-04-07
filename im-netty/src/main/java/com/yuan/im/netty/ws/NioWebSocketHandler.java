@@ -10,7 +10,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -23,9 +24,9 @@ import java.time.format.DateTimeFormatter;
  * @date: 2021/4/1 11:09 上午
  * @describe: 自定义业务处理器
  */
-@Slf4j
 public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
+    private static final Logger log = LoggerFactory.getLogger(NioWebSocketHandler.class);
     /**
      * 请求头
      */
@@ -87,7 +88,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
         // 返回应答消息
         String request = ((TextWebSocketFrame) frame).text();
         log.info("服务端接收到请求:" + request);
-        TextWebSocketFrame tws = new TextWebSocketFrame("date: "+DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalTime.now()) + "<br>id: " +ctx.channel().id() + "<br>内容: " + request);
+        TextWebSocketFrame tws = new TextWebSocketFrame("date: " + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalTime.now()) + "<br>id: " + ctx.channel().id() + "<br>内容: " + request);
         // 群发
         ChannelSupervise.sendToAll(tws);
     }
