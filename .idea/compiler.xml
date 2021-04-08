@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="im-demo" />
+        <module name="im-netty" />
+        <module name="websocket-server" />
+        <module name="im-case" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="im (1)" target="1.8" />
+      <module name="im-ye" target="1.8" />
+      <module name="wrapper" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="im" options="-parameters" />
+      <module name="im (1)" options="-parameters" />
+      <module name="im-case" options="-parameters" />
+      <module name="im-demo" options="-parameters" />
+      <module name="im-netty" options="-parameters" />
+      <module name="im-ye" options="-parameters" />
+      <module name="websocket-server" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -23,6 +23,7 @@
     <modules>
         <module>im-demo</module>
         <module>im-netty</module>
+        <module>im-case</module>
         <module>websocket-server</module>
     </modules>
 
