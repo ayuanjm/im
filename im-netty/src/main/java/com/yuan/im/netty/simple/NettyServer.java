@@ -1,5 +1,6 @@
 package com.yuan.im.netty.simple;
 
+import com.alibaba.fastjson.JSON;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -40,6 +41,7 @@ public class NettyServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
+                            System.out.println("客户socketChannel hashCode:" + ch.hashCode());
                             // 给pipeline设置处理器
                             ch.pipeline().addLast(new NettyServerHandler());
                         }

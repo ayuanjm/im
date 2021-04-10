@@ -9,6 +9,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
 import io.netty.util.CharsetUtil;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * <p>
  * 1、我们自定义一个Handler，需要继承Netty规定好的某个HandlerAdapter
@@ -29,6 +31,34 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+//        readMsg(ctx, (ByteBuf) msg);
+        /**
+         * 如果有一个非常耗时的任务 -> 异步执行 -> 提交该channel对应的NioEventLoop的taskQueue中
+         * ctx.channel().eventLoop()，相当于线程池，将任务提交到线程池中异步执行
+         */
+        // 解决方案1 用户程序自定义的普通任务
+        ctx.channel().eventLoop().execute(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ctx.writeAndFlush(Unpooled.copiedBuffer("execute hello world 客户端", CharsetUtil.UTF_8));
+        });
+
+        // 解决方案2  用户自定义定时任务 该任务提交到scheduleTaskQueue中
+        ctx.channel().eventLoop().schedule(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(15);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ctx.writeAndFlush(Unpooled.copiedBuffer("schedule hello world 客户端", CharsetUtil.UTF_8));
+        }, 5, TimeUnit.SECONDS);
+        System.out.println("go on ...");
+    }
+
+    private void readMsg(ChannelHandlerContext ctx, ByteBuf msg) {
         System.out.println("服务器读取线程:" + Thread.currentThread().getName());
         System.out.println("server ctx:" + JSON.toJSONString(ctx));
         System.out.println("查看channel和pipeline的关系");
@@ -36,7 +66,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         // 本质是一个双向链表
         ChannelPipeline pipeline = ctx.pipeline();
         // 将msg转成一个ByteBuf，ByteBuf是Netty提供的，不是NIO的ByteBuffer
-        ByteBuf byteBuf = (ByteBuf) msg;
+        ByteBuf byteBuf = msg;
         System.out.println("客户端发送的消息是：" + byteBuf.toString(CharsetUtil.UTF_8));
         System.out.println("客户端地址：" + ctx.channel().remoteAddress());
     }
