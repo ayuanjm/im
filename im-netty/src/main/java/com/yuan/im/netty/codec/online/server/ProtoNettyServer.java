@@ -1,15 +1,11 @@
-package com.yuan.im.netty.codec.online;
+package com.yuan.im.netty.codec.online.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
 
 /**
  * @desc:
@@ -38,19 +34,8 @@ public class ProtoNettyServer {
                     .option(ChannelOption.SO_BACKLOG, 128)
                     // 设置保持活动连接状态
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
-                    // 创建一个通道处理匿名对象
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
-                            System.out.println("客户socketChannel hashCode:" + ch.hashCode());
-                            // 在pipeline加入ProtoBufDecoder, 指定对哪种对象进行解码
-                            ch.pipeline().addLast("decoder", new ProtobufDecoder(ImDataInfo.MyMessage.getDefaultInstance()));
-                            // 在pipeline中加入 ProtoBufEncoder
-                            ch.pipeline().addLast("encoder", new ProtobufEncoder());
-                            // 给pipeline设置处理器
-                            ch.pipeline().addLast(new ProtoNettyServerHandler());
-                        }
-                    });
+                    // 创建一个通道处理对象
+                    .childHandler(new ServerChannelInitializer());
             System.out.println("服务器 start-up ...");
             // 绑定一个端口并且同步，生成了一个channelFuture对象，启动服务器并绑定端口
             ChannelFuture channelFuture = serverBootstrap.bind(8088).sync();

@@ -1,9 +1,9 @@
-package com.yuan.im.netty.codec.online;
+package com.yuan.im.netty.codec.online.client.one;
 
+import com.yuan.im.netty.codec.online.vo.ImRequest;
+import com.yuan.im.netty.codec.online.vo.ImResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.util.Random;
 
 /**
  * @desc:
@@ -11,6 +11,7 @@ import java.util.Random;
  * @date: 2021/4/6 23:46
  */
 public class ProtoNettyClientHandler extends SimpleChannelInboundHandler<ImResponse.ImResponseInfo> {
+
     /**
      * 当通道就绪就会触发该方法
      *
@@ -19,16 +20,12 @@ public class ProtoNettyClientHandler extends SimpleChannelInboundHandler<ImRespo
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        // 随机发送User或者Worker对象
-        int nextInt = new Random().nextInt(3);
-        ImDataInfo.MyMessage message = null;
-        if (0 == nextInt) {
-            message = ImDataInfo.MyMessage.newBuilder().setDataType(ImDataInfo.MyMessage.DataType.UserType)
-                    .setUser(ImDataInfo.User.newBuilder().setId(18).setName("张三").build()).build();
-        } else {
-            message = ImDataInfo.MyMessage.newBuilder().setDataType(ImDataInfo.MyMessage.DataType.WorkerType)
-                    .setWorker(ImDataInfo.Worker.newBuilder().setAge(20).setName("李四").build()).build();
-        }
+        ImRequest.ImRequestInfo message = ImRequest.ImRequestInfo.newBuilder().setDataType(ImRequest.ImRequestInfo.DataType.SendRequestType)
+                .setSendRequest(ImRequest.SendRequest.newBuilder()
+                        .setFrom(1L)
+                        .setGroup("ab")
+                        .setCmd(0)
+                        .build()).build();
         ctx.writeAndFlush(message);
     }
 

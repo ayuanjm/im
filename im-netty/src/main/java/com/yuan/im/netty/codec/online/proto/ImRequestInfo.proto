@@ -23,12 +23,14 @@ message ImRequestInfo {
 
 message SendRequest{
   int64 from = 1;//发送者
-  int64 group = 2;//目的会话
+  string group = 2;//目的会话
   string content = 3;//消息内容
   int32 type = 4;//0文字 1文件
+  int32 cmd = 5;//0建立连接，1正常发送消息，2心跳检测，3ack
 }
 message PullRequest {
   int64 uid = 1;//用户id（是获取一个用户的所有会话的历史记录，还是一个会话的历史记录）
-  int64 offset = 2;//拉取历史记录的起始位置，初始是0，之后用服务器返回的数据
-  int32 limit = 3;//单次拉
+  string group = 2;//目的会话
+  int64 offset = 3;//拉取历史记录的起始位置，初始是0，之后用服务器返回的数据
+  int32 limit = 4;//单次拉
 }

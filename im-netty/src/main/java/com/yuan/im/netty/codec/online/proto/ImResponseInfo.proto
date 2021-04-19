@@ -21,7 +21,7 @@ message ImResponseInfo {
 
 message PullResponse{
   int64 from = 1;//发送者
-  int64 group = 2;//目的群
+  string group = 2;//目的群
   string content = 3;//消息内容
   int64 msgId = 4;//消息历史记录表中的消息编号
   int32 cmdId = 5;//消息命令号
