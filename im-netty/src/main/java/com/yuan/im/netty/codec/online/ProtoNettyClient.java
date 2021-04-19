@@ -6,6 +6,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 
 /**
@@ -26,6 +27,8 @@ public class ProtoNettyClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
+                            // 在pipeline加入ProtoBufDecoder, 指定对哪种对象进行解码
+                            ch.pipeline().addLast("decoder", new ProtobufDecoder(ImResponse.ImResponseInfo.getDefaultInstance()));
                             // 在pipeline中加入 ProtoBufEncoder
                             ch.pipeline().addLast("encoder", new ProtobufEncoder());
                             ch.pipeline().addLast(new ProtoNettyClientHandler());

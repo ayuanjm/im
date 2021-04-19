@@ -1,9 +1,7 @@
 package com.yuan.im.netty.codec.online;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.CharsetUtil;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.Random;
 
@@ -12,7 +10,7 @@ import java.util.Random;
  * @author: YuanJiaMin
  * @date: 2021/4/6 23:46
  */
-public class ProtoNettyClientHandler extends ChannelInboundHandlerAdapter {
+public class ProtoNettyClientHandler extends SimpleChannelInboundHandler<ImResponse.ImResponseInfo> {
     /**
      * 当通道就绪就会触发该方法
      *
@@ -42,10 +40,9 @@ public class ProtoNettyClientHandler extends ChannelInboundHandlerAdapter {
      * @throws Exception
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf byteBuf = (ByteBuf) msg;
-        System.out.println("服务回复的消息：" + byteBuf.toString(CharsetUtil.UTF_8));
-        System.out.println("服务器的地址：" + ctx.channel().remoteAddress());
+    protected void channelRead0(ChannelHandlerContext ctx, ImResponse.ImResponseInfo msg) throws Exception {
+        ImResponse.PullResponse pullResponse = msg.getPullResponse();
+        System.out.println(pullResponse.toString());
     }
 
     @Override

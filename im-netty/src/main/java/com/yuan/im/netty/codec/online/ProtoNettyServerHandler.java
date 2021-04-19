@@ -1,9 +1,7 @@
 package com.yuan.im.netty.codec.online;
 
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.CharsetUtil;
 
 /**
  * <p>
@@ -36,22 +34,16 @@ public class ProtoNettyServerHandler extends SimpleChannelInboundHandler<ImDataI
         } else {
             System.out.println("传输的类型不正确");
         }
-    }
-
-    /**
-     * 数据读取完毕
-     *
-     * @param ctx
-     * @throws Exception
-     */
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        /**
-         * writeAndFlush是write+flush
-         * 将数据写入缓存，并刷新
-         * 对发送的数据进行编码
-         */
-        ctx.writeAndFlush(Unpooled.copiedBuffer("hello world 客户端", CharsetUtil.UTF_8));
+        ImResponse.ImResponseInfo responseInfo = ImResponse.ImResponseInfo.newBuilder().setDataType(ImResponse.ImResponseInfo.DataType.PullResponseType)
+                .setPullResponse(ImResponse.PullResponse.newBuilder()
+                        .setContent("hello world")
+                        .setMsgId(100L)
+                        .setGroup(10L)
+                        .setFrom(1L)
+                        .setSendTime(System.currentTimeMillis())
+                        .setCmdId(3)
+                        .build()).build();
+        channelHandlerContext.writeAndFlush(responseInfo);
     }
 
     /**

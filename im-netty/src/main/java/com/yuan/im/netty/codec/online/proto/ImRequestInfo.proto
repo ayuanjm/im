@@ -1,0 +1,34 @@
+syntax = "proto3";
+option optimize_for = SPEED; // 加快解析
+option java_outer_classname = "ImRequest"; // 外部类名, 文件名
+
+//protobuf 可以使用message 管理其他的message
+message ImRequestInfo {
+
+  //定义一个枚举类型
+  enum DataType {
+    SendRequestType = 0; //在proto3 要求enum的编号从0开始
+    PullRequestType = 1;
+  }
+
+  //DataType自定义枚举类型，标识传的是哪一个枚举类型
+  DataType data_type = 1;
+
+  //表示每次枚举类型最多只能出现其中的一个, 节省空间
+  oneof dataBody {
+    SendRequest sendRequest = 2;
+    PullRequest pullRequest = 3;
+  }
+}
+
+message SendRequest{
+  int64 from = 1;//发送者
+  int64 group = 2;//目的会话
+  string content = 3;//消息内容
+  int32 type = 4;//0文字 1文件
+}
+message PullRequest {
+  int64 uid = 1;//用户id（是获取一个用户的所有会话的历史记录，还是一个会话的历史记录）
+  int64 offset = 2;//拉取历史记录的起始位置，初始是0，之后用服务器返回的数据
+  int32 limit = 3;//单次拉
+}

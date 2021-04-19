@@ -9,6 +9,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
 
 /**
  * @desc:
@@ -44,6 +45,8 @@ public class ProtoNettyServer {
                             System.out.println("客户socketChannel hashCode:" + ch.hashCode());
                             // 在pipeline加入ProtoBufDecoder, 指定对哪种对象进行解码
                             ch.pipeline().addLast("decoder", new ProtobufDecoder(ImDataInfo.MyMessage.getDefaultInstance()));
+                            // 在pipeline中加入 ProtoBufEncoder
+                            ch.pipeline().addLast("encoder", new ProtobufEncoder());
                             // 给pipeline设置处理器
                             ch.pipeline().addLast(new ProtoNettyServerHandler());
                         }
