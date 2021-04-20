@@ -1,23 +1,23 @@
 syntax = "proto3";
 option optimize_for = SPEED; // 加快解析
-option java_outer_classname = "ImRequest"; // 外部类名, 文件名
+option java_outer_classname = "ImModel"; // 外部类名, 文件名
 
 //protobuf 可以使用message 管理其他的message
-message ImRequestInfo {
-
+message ImDataModel {
+  int32 cmd = 1;//0建立连接，1发送消息，2心跳检测，3ack
   //定义一个枚举类型
   enum DataType {
     SendRequestType = 0; //在proto3 要求enum的编号从0开始
     PullRequestType = 1;
+    PullResponseType = 2;
   }
-
   //DataType自定义枚举类型，标识传的是哪一个枚举类型
-  DataType data_type = 1;
-
+  DataType data_type = 2;
   //表示每次枚举类型最多只能出现其中的一个, 节省空间
   oneof dataBody {
-    SendRequest sendRequest = 2;
-    PullRequest pullRequest = 3;
+    SendRequest sendRequest = 3;
+    PullRequest pullRequest = 4;
+    PullResponse pullResponse = 5;
   }
 }
 
@@ -26,11 +26,24 @@ message SendRequest{
   string group = 2;//目的会话
   string content = 3;//消息内容
   int32 type = 4;//0文字 1文件
-  int32 cmd = 5;//0建立连接，1正常发送消息，2心跳检测，3ack
 }
+
 message PullRequest {
   int64 uid = 1;//用户id（是获取一个用户的所有会话的历史记录，还是一个会话的历史记录）
   string group = 2;//目的会话
   int64 offset = 3;//拉取历史记录的起始位置，初始是0，之后用服务器返回的数据
   int32 limit = 4;//单次拉
+}
+
+message PullMsg {
+  int64 from = 1;//发送者
+  string group = 2;//目的群
+  string content = 3;//消息内容
+  int64 msgId = 4;//消息历史记录表中的消息编号
+  int32 cmdId = 5;//消息命令号
+  int64 sendTime = 6;//消息发送时间
+}
+
+message PullResponse{
+  repeated PullMsg msg = 1;//repeated数组
 }
