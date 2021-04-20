@@ -4,12 +4,10 @@ import com.yuan.im.netty.codec.online.vo.ImModel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.stream.ChunkedWriteHandler;
 
 /**
  * Copyright(c) 2018 Sunyur.com, All Rights Reserved.
@@ -29,10 +27,6 @@ public class ClientChannelInitializerA extends ChannelInitializer<SocketChannel>
         pipeline.addLast("decoder", new ProtobufDecoder(ImModel.ImDataModel.getDefaultInstance()));
         // 在pipeline中加入 ProtoBufEncoder,设置Protobuf编码器
         pipeline.addLast("encoder", new ProtobufEncoder());
-        // 聚合器，websocket会用到
-        pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
-        // 用于大数据的分区传输
-        ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
         // 添加自定义业务handler
         pipeline.addLast(new ProtoNettyClientHandlerA());
     }
