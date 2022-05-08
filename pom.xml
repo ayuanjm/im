@@ -25,6 +25,7 @@
         <module>im-netty</module>
         <module>im-case</module>
         <module>websocket-server</module>
+        <module>im-nio</module>
     </modules>
 
     <dependencies>
